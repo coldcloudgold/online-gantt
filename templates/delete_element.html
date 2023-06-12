@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Удаление{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 my-5">
+        <div class="card text-center">
+            <div class="card-header">Удаление объекта</div>
+            <div class="card-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <h4>Вы действительно хотите удалить "{{ object|truncatechars:50 }}"?</h4>
+                    <div>
+                        <input class="btn btn-primary" type="submit" value="Подтвердить" />
+                        <button class="btn btn-warning" onclick="window.history.back();" type="button">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

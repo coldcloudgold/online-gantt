@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Связи события {{ event.name }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url 'project_detail' project.id %}">Вернуться к проекту</a>
+        </div>
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url 'events' project.id %}">Вернуться к событиям</a>
+        </div>
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url 'event_link_create' project.id event.id %}" role="button">Создать связь</a>
+        </div>
+
+        {% if page_obj %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Последователь</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event_link in page_obj %}
+                    <tr>
+                        <th scope="col">{{ event_link.follower }}</th>
+                        <td><a class="btn btn-sm text-muted" href="{% url 'event_link_update' project.id event.id event_link.id %}" role="button">Изменить</a></td>
+                        <td><a class="btn btn-sm text-muted" href="{% url 'event_link_delete' project.id event.id event_link.id %}" role="button">Удалить</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center">
+            <h4>Тут еще записей</h4>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

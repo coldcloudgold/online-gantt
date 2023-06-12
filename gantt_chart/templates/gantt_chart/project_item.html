@@ -1,0 +1,68 @@
+{% load custom_filters %}
+
+<div class="card shadow my-3">
+
+    {% if project.image %}
+        <img class="card-img" src="{{ project.image.url }}" alt="" />
+    {% endif %}
+
+    <h5 class="card-header">
+        {% if detail %}
+            {{ project.name }}
+        {% else %}
+            <a name="project_{{ project.id }}" href="{% url 'project_detail' project.id %}">{{ project.name|truncatechars:50 }}</a>
+        {% endif %}
+    </h5>
+
+    <div class="card-body">
+        <p class="card-text">
+            {% if detail %}
+                {{ project.description }}
+            {% else %}
+                {{ project.description|truncatechars:100 }}
+            {% endif %}
+        </p>
+
+        {% if root_event %}
+            <div class="my-3">
+                <div class="text-center">Фактический прогресс:</div>
+                <div class="progress my-3" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: {{ root_event.get_avg_percentage_completion }}%">{{ root_event.get_avg_percentage_completion }}%</div>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item active" aria-current="true">Планируемые данные:</li>
+                    <li class="list-group-item">Минимальная планируемая дата начала: {{ root_event.get_min_planned_start|none_date_as_dash }}</li>
+                    <li class="list-group-item">Максимальная планируемая дата окончания: {{ root_event.get_max_planned_end|none_date_as_dash }}</li>
+                    <li class="list-group-item">Итоговая планируемая продолжительность: {{ root_event.get_full_planned_duration|none_as_dash }}</li>
+                    <li class="list-group-item">Остаток дней планируемых дат: {{ root_event.get_rest_planned|none_as_dash }}</li>
+                    <li class="list-group-item active" aria-current="true">Фактические данные:</li>
+                    <li class="list-group-item">Минимальная фактическая дата начала: {{ root_event.get_min_actual_start|none_date_as_dash }}</li>
+                    <li class="list-group-item">Максимальная фактическая дата начала: {{ root_event.get_max_actual_start|none_date_as_dash }}</li>
+                    <li class="list-group-item">Максимальная фактическая дата окончания: {{ root_event.get_max_actual_end|none_date_as_dash }}</li>
+                    <li class="list-group-item">Текущая дата: {{ root_event.get_current_date|none_date_as_dash }}</li>
+                    <li class="list-group-item">Итоговая фактическая продолжительность: {{ root_event.get_full_actual_duration|none_as_dash }}</li>
+                    <li class="list-group-item">Отклонение дней от планируемых дат: {{ root_event.get_actual_deviation|none_as_dash }}</li>
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if detail %}
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url 'project_delete' project.id %}" role="button">Удалить</a>
+        </div>
+        {% endif %}
+
+        {% if detail %}
+            <div class="text-end">
+                <a class="btn btn-sm text-muted" href="{% url 'project_update' project.id %}" role="button">Редактировать</a>
+            </div>
+            <div class="text-end">
+                <a class="btn btn-sm text-muted" href="{% url 'project_participants' project.id %}" role="button">Участники проекта</a>
+            </div>
+            <div class="text-end">
+                <a class="btn btn-sm text-muted" href="{% url 'events' project.id %}" role="button">Данные проекта</a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>

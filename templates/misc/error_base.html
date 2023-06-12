@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Ошибка {{ title }}{% endblock %}
+
+
+{% block content %}
+
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1>
+                {% block error_header %}{% endblock %}
+            </h1>
+            <p class="lead">
+                {% block error_info %}{% endblock %}
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-primary active" onclick="window.history.back();" type="button">Назад</button>
+                <a class="btn btn-primary" href="{% url  'index' %}">Вернуться на главную</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

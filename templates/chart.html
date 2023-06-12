@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}График Гантта проекта {{ project }}{% endblock title %}
+
+{% block static %}
+{% load static %}
+<script src="{% static 'functions.js' %}"></script>
+<link rel="stylesheet" href="{% static 'frappe-gantt-lumeer/dist/frappe-gantt.css' %}">
+<script src="{% static 'frappe-gantt-lumeer/dist/frappe-gantt.min.js' %}"></script>
+{% endblock static %}
+
+{% block content %}
+
+<div class="text-end">
+    <a class="btn btn-sm text-muted" href="{% url  'project_detail' project.id %}">Вернуться к проекту</a>
+</div>
+<div class="text-end">
+    <a class="btn btn-sm text-muted" href="{% url 'events' project.id %}">Вернуться к событиям</a>
+</div>
+<div class="text-end">
+    <a class="btn btn-sm text-muted" href="{{ another_url }}" role="button">График с датами другого типа</a>
+</div>
+
+
+<!-- project_version == project.version_uuid -->
+<div id="project-version" data-currnent="{{ project_version }}"></div>
+<!-- <button id="need-to-refresh-btn" disabled onclick="location.reload()">Обновить график</button> -->
+
+<div class="row my-3">
+    <div class="col">
+        <div class="text-center">
+            <h4>Изменить отображение графика</h4>
+            <div class="btn-group chart-controls" role="group" aria-label="radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="day-btn" autocomplete="off">
+                <label class="btn btn-outline-primary" for="day-btn">День</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="week-btn" autocomplete="off" autofocus>
+                <label class="btn btn-outline-primary" for="week-btn">Неделя</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="month-btn" autocomplete="off">
+                <label class="btn btn-outline-primary" for="month-btn">Месяц</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div id="gantt"></div>
+</div>
+
+<script>
+    const projectVersion = getCurrentProjectVersion();
+    longPollVersion(projectVersion, "need-to-refresh-btn");
+    getGanttChartData()
+        .then(tasks => createGanttChart(tasks))
+        .catch(error => alert(`Не удалось получить данные графика. Попробуйте обновить страницу или обратитесь в поддержку`));
+</script>
+
+{% endblock content %}

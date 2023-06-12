@@ -1,0 +1,10 @@
+{% extends "misc/error_base.html" %}
+
+{% block title %}Ошибка 404{% endblock %}
+
+{% block content.super %}
+
+{% block error_header %}Ошибка 404{% endblock %}
+{% block error_info %}Страница <code>{{ path }}</code> не найдена{% endblock %}
+
+{% endblock %}

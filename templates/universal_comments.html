@@ -1,0 +1,41 @@
+{% load custom_filters %}
+
+{% if user|can_work_project:project %}
+    <div class="card my-3 shadow">
+        <form action="{% url 'comment_create' object_type object_id %}?next={{ request.path }}" method="post">
+            {% csrf_token %}
+            <h5 class="card-header">
+                Добавить комментарий:
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    {{ form.comment|addclass:"form-control" }}
+                </div>
+                <br />
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Отправить
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endif %}
+
+{% for universal_comment in universal_comments %}
+    <div class="card my-3 shadow">
+        <div class="card-body">
+            <h5 class="card-title">{{ universal_comment.author.username }} | {{ universal_comment.created_at|date:"d M Y" }}</h5>
+            <p class="card-text">{{ universal_comment.comment }}</p>
+
+            {% if universal_comment.author == user %}
+            <form action="{% url 'comment_delete' object_type object_id universal_comment.id %}?next={{ request.path }}" method="post">
+                {% csrf_token %}
+                <div class="text-end">
+                    <button class="btn btn-sm text-muted" type="submit">Удалить</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

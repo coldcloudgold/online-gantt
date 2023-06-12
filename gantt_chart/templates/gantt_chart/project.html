@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Проект {{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        {% include "gantt_chart/project_item.html" with project=project detail=True %}
+        {% include "universal_comments.html" with object_type=object_type object_id=object_id universal_comments=universal_comments project=project %}
+    </div>
+</div>
+
+{% endblock content %}

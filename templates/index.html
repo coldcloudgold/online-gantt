@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        {% if page_obj %}
+            {% for project in page_obj %}
+                {% include "gantt_chart/project_item.html" with project=project detail=False %}
+            {% endfor %}
+        {% else %}
+            <div class="text-center">
+                <h4>Тут еще нет записей</h4>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

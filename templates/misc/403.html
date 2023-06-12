@@ -1,0 +1,10 @@
+{% extends "misc/error_base.html" %}
+
+{% block title %}Ошибка 403{% endblock %}
+
+{% block content.super %}
+
+{% block error_header %}Ошибка 403{% endblock %}
+{% block error_info %}Ошибка доступа. Запрашиваемый ресурс не доступен для текущего пользователя{% endblock %}
+
+{% endblock %}

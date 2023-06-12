@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}События проекта {{ project.name }}{% endblock %}
+
+{% block content %}
+
+{% load custom_filters %}
+
+<div class="row">
+    <div class="col">
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url  'project_detail' project.id %}">Вернуться к проекту</a>
+        </div>
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url 'event_create' project.id %}" role="button">Создать событие</a>
+        </div>
+
+        {% if page_obj %}
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url 'chart' project.id 'planned' %}" role="button">График с плановыми датами</a>
+        </div>
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url 'chart' project.id 'actual' %}" role="button">График с актуальными датами</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Номер иерархии</th>
+                        <th scope="col">Название</th>
+                        <th scope="col">Планируемая дата начала</th>
+                        <th scope="col">Планируемая длительность</th>
+                        <th scope="col">Планируемая дата окончания</th>
+                        <th scope="col">Фактическая дата начала</th>
+                        <th scope="col">Фактическая длительность</th>
+                        <th scope="col">Фактическая дата окончания</th>
+                        <th scope="col">Процент выполнения</th>
+                        <th scope="col">Ответственный</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in page_obj %}
+                    <tr>
+                        <td>{{ event.hierarchical_number }}</td>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.planned_start|none_date_as_dash }}</td>
+                        <td>{{ event.planned_duration|none_as_dash }}</td>
+                        <td>{{ event.planned_end|none_date_as_dash }}</td>
+                        <td>{{ event.actual_start|none_date_as_dash }}</td>
+                        <td>{{ event.actual_duration|none_as_dash }}</td>
+                        <td>{{ event.actual_end|none_date_as_dash }}</td>
+                        <td>{{ event.percentage_completion|none_as_dash }}</td>
+                        <td>{{ event.responsible|none_as_dash }}</td>
+                        <td><a class="btn btn-sm text-muted" href="{% url 'event_links' project.id event.id %}" role="button">Связи</a></td>
+                        <td><a class="btn btn-sm text-muted" href="{% url 'event_update' project.id event.id %}" role="button">Изменить</a></td>
+                        {% if event.is_root %}
+                        <td></td>
+                        {% else %}
+                        <td><a class="btn btn-sm text-muted" href="{% url 'event_delete' project.id event.id %}" role="button">Удалить</a></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center">
+            <h4>Тут еще нет записей</h4>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

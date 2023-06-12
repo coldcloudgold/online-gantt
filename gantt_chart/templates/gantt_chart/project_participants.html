@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Участники проекта {{ project }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url  'project_detail' project.id %}">Вернуться к проекту</a>
+        </div>
+        <div class="text-end">
+            <a class="btn btn-sm text-muted" href="{% url 'project_participant_create' project.id %}" role="button">Создать участника</a>
+        </div>
+
+        {% if page_obj %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Участник</th>
+                        <th scope="col">Роль</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project_participant in page_obj %}
+                        <tr>
+                            <td>{{ project_participant.participant }}</td>
+                            <td>{{ project_participant.visible_role }}</td>
+                            <td><a class="btn btn-sm text-muted" href="{% url 'project_participant_update' project.id project_participant.id %}" role="button">Изменить</a></td>
+                            <td><a class="btn btn-sm text-muted" href="{% url 'project_participant_delete' project.id project_participant.id %}" role="button">Удалить</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="text-center">
+                <h4>Тут еще нет записей</h4>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

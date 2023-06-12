@@ -1,0 +1,15 @@
+<nav class="navbar mb-3" style="background-color: rgba(0, 0, 0, 0.05);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'index' %}">График Гантта</a>
+        <nav>
+            {% if user.is_authenticated %}
+            Пользователь: {{ user.username }}
+            <a class="p-2 text-dark" href="{% url 'project_create' %}">Создать проект</a>
+            <a class="p-2 text-dark" href="">Изменить пароль</a>
+            <a class="p-2 text-dark" href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+            <a class="p-2 text-dark" href="{% url 'login' %}">Войти</a>
+            {% endif %}
+        </nav>
+    </div>
+</nav>

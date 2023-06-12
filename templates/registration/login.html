@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Вход в систему{% endblock title %}
+
+{% block content %}
+
+{% load custom_filters %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 my-5">
+        <div class="card">
+            <div class="card-header text-center">Вход в систему</div>
+            <div class="card-body">
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                        <p>Не удалось войти по введенным данным. Пожалуйста, повторите попытку или обратитесь к администратору</p>
+                    {% endif %}
+
+                    {% if next %}
+                        {% if user.is_authenticated %}
+                            <p>Ваш аккаунт не имеет доступа к этой странице.</p>
+                        {% else %}
+                            <p>Пожалуйста, войдите в систему чтобы увидеть содержимое страницы.</p>
+                        {% endif %}
+                    {% endif %}
+
+                    {% for field in form %}
+                        <div class="form-group row" aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}>
+                            <label for="{{ field.id_for_label }}" class="col-md-3 col-form-label text-end">
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                {% else %}
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="required">*</span>
+                                    {% endif %}
+                                {% endif %}
+                            </label>
+
+                            <div class="col-md-6">
+                                {% if field|field_type != 'CheckboxInput' %}
+                                    {{ field|addclass:"form-control" }}
+                                {% else %}
+                                    <div class="text-center">
+                                        {{ field|addclassandid }}
+                                    </div>
+                                {% endif %}
+                                {% if field.help_text %}
+                                    <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br>
+
+                    {% endfor %}
+
+                    <div class="text-center">
+                        <input class="btn btn-primary" type="submit" value="Вход" />
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </div>
+
+                </form>
+
+                <div class="text-end">
+                    <button class="btn btn-sm text-muted" onclick="window.history.back();" type="button">Назад</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,32 +1,26 @@
-FROM python:3.11.4-slim as build
+FROM python:3.11-slim-bullseye as base_image
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-RUN mkdir /app
-
-WORKDIR /app
+ENV POETRY_VIRTUALENVS_IN_PROJECT=0 \
+    POETRY_VIRTUALENVS_CREATE=0 \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
 
 COPY --from=ghcr.io/ufoscout/docker-compose-wait:latest /wait /wait
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        # build-essential \
-        # gcc \
-        python3-dev && \
-        # libssl-dev \
-        # libsasl2-dev \
-    python -m pip install poetry && \
-    poetry config virtualenvs.create false
+WORKDIR /app
 
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock ./
 
-RUN  python -m pip install --upgrade pip setuptools  &&\
-    poetry install --no-dev
+RUN python -m pip install --upgrade pip && \
+    python -m pip install --no-cache-dir poetry==1.5.1
 
-COPY ./ /app/
+RUN poetry install --no-root --without dev && \
+    rm -rf $POETRY_CACHE_DIR
+
+COPY ./ ./
 
 RUN python manage.py collectstatic --noinput
-
-VOLUME /app/static
 
 CMD /wait && ./entrypoint.sh

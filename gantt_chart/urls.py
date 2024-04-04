@@ -1,10 +1,18 @@
 from django.contrib.auth.decorators import login_required
-from django.urls import path
+from django.urls import path, reverse
+from django.shortcuts import redirect
 
 from gantt_chart import views
 from gantt_chart.constants import EVENT_IDENTIFIER_FIELD, PROJECT_IDENTIFIER_FIELD, TypeDate
 
+
+def redirect_to_index(request):
+    return redirect(reverse(views.ProjectListView._path_name))
+
+
 urlpatterns = [
+    # Главная
+    path("/", redirect_to_index),
     # Проекты
     path("index/", login_required(views.ProjectListView.as_view()), name=views.ProjectListView._path_name),
     path("project/create/", login_required(views.ProjectCreateView.as_view()), name=views.ProjectCreateView._path_name),

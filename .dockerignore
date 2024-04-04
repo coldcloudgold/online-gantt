@@ -5,6 +5,7 @@
 **/.env
 **/.git
 **/.gitignore
+**/.mypy_cache
 **/.vscode
 **/docker-compose*
 **/compose*

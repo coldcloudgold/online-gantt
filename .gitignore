@@ -2,7 +2,5 @@
 *.pyo
 **/__pycache__
 **/.env
+**/.mypy_cache
 **/.vscode
-**/docker-compose*
-**/compose*
-README.md

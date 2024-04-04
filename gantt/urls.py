@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
@@ -16,3 +17,7 @@ if not settings.DEBUG:
     handler403 = "gantt_chart.views.permission_denied"  # noqa: F811
     handler404 = "gantt_chart.views.page_not_found"  # noqa: F811
     handler500 = "gantt_chart.views.server_error"  # noqa: F811
+
+else:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

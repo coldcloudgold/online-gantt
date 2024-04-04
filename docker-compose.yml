@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  postgresdb:
+    # restart: always
+    image: postgres:16.1-alpine3.18
+    environment:
+      POSTGRES_DB: ${DJANGO_DB_DATABASE}
+      POSTGRES_USER: ${DJANGO_DB_USER}
+      POSTGRES_PASSWORD: ${DJANGO_DB_PASSWORD}
+    volumes:
+      - postgresdb_valume:/var/lib/postgresql/data:rw
+
+  webapp:
+    # restart: always
+    build: 
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - shared_data:/app
+    depends_on:
+      - postgresdb
+    environment:
+      WAIT_HOSTS: postgresdb:5432
+      # - general
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      # - db
+      DJANGO_DB_DATABASE: ${DJANGO_DB_DATABASE}
+      DJANGO_DB_USER: ${DJANGO_DB_USER}
+      DJANGO_DB_PASSWORD: ${DJANGO_DB_PASSWORD}
+      DATABASE_URL: ${DATABASE_URL}
+      # - default admin
+      ADMIN_NAME: ${ADMIN_NAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+
+  nginxproxyserver:
+    # restart: always
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    volumes:
+      - shared_data:/app_data
+    ports:
+      - "8080:80"
+    depends_on:
+      - webapp
+
+volumes:
+  postgresdb_valume: {}
+  shared_data: {}

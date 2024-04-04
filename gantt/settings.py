@@ -15,8 +15,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get("DJANGO_SECRET_KEY", "super_secret_key")
 DEBUG = True if environ.get("DJANGO_DEBUG") in ("1", "True", "true") else False  # noqa: SIM210
 logger.debug(f"{DEBUG=}")
-ALLOWED_HOSTS = (environ.get("DJANGO_ALLOWED_HOSTS", "*"), "localhost", "127.0.0.1")
+schemas = ("http", "https")
+ALLOWED_HOSTS = (environ.get("DJANGO_ALLOWED_HOSTS", "*"), "localhost", "127.0.0.1", "0.0.0.0")
 logger.debug(f"{ALLOWED_HOSTS=}")
+CSRF_TRUSTED_ORIGINS = ["{schema}://{address}:8080".format(schema=schema, address=address) for schema in schemas for address in ALLOWED_HOSTS]
+logger.debug(f"{CSRF_TRUSTED_ORIGINS=}")
 # LOGIN_URL = "/admin/login/"  # TODO
 LOGIN_URL = reverse_lazy("login")  # TODO
 LOGIN_REDIRECT_URL = reverse_lazy("index")
@@ -85,11 +88,11 @@ WSGI_APPLICATION = "gantt.wsgi.application"
 
 # DATABASES
 DATABASES = {
-    "default": parse(environ.get("DATABASE_URL"))
-    # {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": BASE_DIR / "db.sqlite3",
-    # }
+    "default": # parse(environ.get("DATABASE_URL"))
+    {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
 
 
@@ -121,6 +124,7 @@ USE_TZ = True
 # Files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR.joinpath("static")
+STATICFILES_DIRS = [BASE_DIR.joinpath("templates")]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR.joinpath("media")
 

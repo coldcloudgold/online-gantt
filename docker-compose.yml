@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: ${DJANGO_DB_USER}
       POSTGRES_PASSWORD: ${DJANGO_DB_PASSWORD}
     volumes:
-      - postgresdb_valume:/var/lib/postgresql/data:rw
+      - postgresdb_volume:/var/lib/postgresql/data:rw
 
   webapp:
     # restart: always
@@ -17,7 +17,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/app
-      - shared_data:/app
+      - tunnel_volume:/app/static
     depends_on:
       - postgresdb
     environment:
@@ -41,12 +41,12 @@ services:
       context: ./docker/nginx
       dockerfile: Dockerfile
     volumes:
-      - shared_data:/app_data
+      - tunnel_volume:/static
     ports:
       - "8080:80"
     depends_on:
       - webapp
 
 volumes:
-  postgresdb_valume: {}
-  shared_data: {}
+  postgresdb_volume: {}
+  tunnel_volume: {}

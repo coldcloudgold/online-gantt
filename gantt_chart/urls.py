@@ -12,7 +12,7 @@ def redirect_to_index(request):
 
 urlpatterns = [
     # Главная
-    path("/", redirect_to_index),
+    path("", redirect_to_index),
     # Проекты
     path("index/", login_required(views.ProjectListView.as_view()), name=views.ProjectListView._path_name),
     path("project/create/", login_required(views.ProjectCreateView.as_view()), name=views.ProjectCreateView._path_name),

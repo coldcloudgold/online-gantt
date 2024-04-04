@@ -18,7 +18,11 @@ logger.debug(f"{DEBUG=}")
 schemas = ("http", "https")
 ALLOWED_HOSTS = (environ.get("DJANGO_ALLOWED_HOSTS", "*"), "localhost", "127.0.0.1", "0.0.0.0")
 logger.debug(f"{ALLOWED_HOSTS=}")
-CSRF_TRUSTED_ORIGINS = ["{schema}://{address}:8080".format(schema=schema, address=address) for schema in schemas for address in ALLOWED_HOSTS]
+CSRF_TRUSTED_ORIGINS = [
+    "{schema}://{address}:8080".format(schema=schema, address=address)
+    for schema in schemas
+    for address in ALLOWED_HOSTS
+]
 logger.debug(f"{CSRF_TRUSTED_ORIGINS=}")
 # LOGIN_URL = "/admin/login/"  # TODO
 LOGIN_URL = reverse_lazy("login")  # TODO
@@ -87,13 +91,14 @@ WSGI_APPLICATION = "gantt.wsgi.application"
 
 
 # DATABASES
-DATABASES = {
-    "default": # parse(environ.get("DATABASE_URL"))
-    {
+if environ.get("DATABASE_URL"):
+    db_conf = parse(environ.get("DATABASE_URL"))
+else:
+    db_conf = {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR.joinpath("db.sqlite3"),
     }
-}
+DATABASES = {"default": db_conf}
 
 
 # PASSWORD VALIDATORS

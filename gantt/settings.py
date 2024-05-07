@@ -16,7 +16,7 @@ SECRET_KEY = environ.get("DJANGO_SECRET_KEY", "super_secret_key")
 DEBUG = True if environ.get("DJANGO_DEBUG") in ("1", "True", "true") else False  # noqa: SIM210
 logger.debug(f"{DEBUG=}")
 schemas = ("http", "https")
-ALLOWED_HOSTS = (environ.get("DJANGO_ALLOWED_HOSTS", "*"), "localhost", "127.0.0.1", "0.0.0.0")
+ALLOWED_HOSTS = (environ.get("DJANGO_ALLOWED_HOSTS", "*"), "localhost", "127.0.0.1", "0.0.0.0", "webapp")
 logger.debug(f"{ALLOWED_HOSTS=}")
 CSRF_TRUSTED_ORIGINS = [
     "{schema}://{address}:8080".format(schema=schema, address=address)

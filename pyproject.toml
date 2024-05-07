@@ -22,9 +22,9 @@ django-bootstrap-datepicker-plus = "^5.0.3"
 pillow = "^9.5.0"
 django-imagekit = "^4.1.0"
 dj-database-url = "^2.0.0"
+django-extensions = "^3.2.1"
 
 [tool.poetry.group.dev.dependencies]
-django-extensions = "^3.2.1"
 djlint = "^1.28.0"
 ipython = "^8.13.2"
 black = "^23.3.0"

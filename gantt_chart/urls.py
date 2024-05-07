@@ -10,10 +10,7 @@ def redirect_to_index(request):
     return redirect(reverse(views.ProjectListView._path_name))
 
 
-urlpatterns = [
-    # Главная
-    path("", redirect_to_index),
-    # Проекты
+project = [
     path("index/", login_required(views.ProjectListView.as_view()), name=views.ProjectListView._path_name),
     path("project/create/", login_required(views.ProjectCreateView.as_view()), name=views.ProjectCreateView._path_name),
     path(
@@ -31,7 +28,9 @@ urlpatterns = [
         login_required(views.ProjectDeleteView.as_view()),
         name=views.ProjectDeleteView._path_name,
     ),
-    # Участники проекта
+]
+
+participant = [
     path(
         f"project/<int:{PROJECT_IDENTIFIER_FIELD}>/participant/",
         login_required(views.ProjectParticipantListView.as_view()),
@@ -52,7 +51,9 @@ urlpatterns = [
         login_required(views.ProjectParticipantDeleteView.as_view()),
         name=views.ProjectParticipantDeleteView._path_name,
     ),
-    # События
+]
+
+event = [
     path(
         f"project/<int:{PROJECT_IDENTIFIER_FIELD}>/event/",
         login_required(views.EventListView.as_view()),
@@ -73,7 +74,9 @@ urlpatterns = [
         login_required(views.EventDeleteView.as_view()),
         name=views.EventDeleteView._path_name,
     ),
-    # Связи событий
+]
+
+event_link = [
     path(
         f"project/<int:{PROJECT_IDENTIFIER_FIELD}>/events/<int:{EVENT_IDENTIFIER_FIELD}>/link/",
         login_required(views.EventLinkListView.as_view()),
@@ -94,7 +97,9 @@ urlpatterns = [
         login_required(views.EventLinkDeleteView.as_view()),
         name=views.EventLinkDeleteView._path_name,
     ),
-    # График
+]
+
+chart = [
     path(
         f"project/<int:{PROJECT_IDENTIFIER_FIELD}>/chart/<str:type_date>/",
         login_required(views.chart),
@@ -115,13 +120,26 @@ urlpatterns = [
         login_required(views.version),
         name="chart_version",
     ),
-    # Комментарии
+]
+
+comment = [
     path("comment/<str:object_type>/<str:object_id>/", login_required(views.comment_hanlde), name="comment_create"),
     path(
         "comment/<str:object_type>/<str:object_id>/<int:pk>/",
         login_required(views.comment_hanlde),
         name="comment_delete",
     ),
+]
+
+urlpatterns = [
+    # Главная
+    path("", redirect_to_index),
+    *project,
+    *participant,
+    *event,
+    *event_link,
+    *chart,
+    *comment,
     # Select2
     path("participant_select2/", login_required(views.ProjectParticipantListAPIView.as_view())),
     path("event_select2/", login_required(views.SelectEventListAPIView.as_view())),

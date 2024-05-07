@@ -43,13 +43,14 @@ INSTALLED_APPS = [
     "admin_auto_filters",
     "bootstrap_datepicker_plus",
     "django_select2",
-    "django_extensions",  # TODO remove
     "imagekit",
     # APPS
     "gantt_chart",
 ]
-SHELL_PLUS_PRINT_SQL_TRUNCATE = None  # TODO remove
 
+if DEBUG:
+    INSTALLED_APPS.append("django_extensions")
+    SHELL_PLUS_PRINT_SQL_TRUNCATE = None
 
 # MIDDLEWARES
 MIDDLEWARE = [

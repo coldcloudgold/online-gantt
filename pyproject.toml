@@ -2,7 +2,7 @@
 name = "gantt"
 version = "0.1.0"
 description = ""
-authors = ["Ruslan Urazbakhtin <r.urazbahtin@samolet.ru>"]
+authors = ["Ruslan Urazbakhtin <r.urazbahtin@_.ru>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -12,7 +12,6 @@ python-dotenv = "^1.0.0"
 gunicorn = "^20.1.0"
 psycopg2-binary = "^2.9.6"
 django = "^4.2.1"
-djlint = "^1.28.0"
 django-jsonform = "^2.17.0"
 djangorestframework = "^3.14.0"
 django-select2 = "^8.1.2"
@@ -22,10 +21,11 @@ django-filter = "^23.2"
 django-bootstrap-datepicker-plus = "^5.0.3"
 pillow = "^9.5.0"
 django-imagekit = "^4.1.0"
-django-extensions = "^3.2.1"
 dj-database-url = "^2.0.0"
 
 [tool.poetry.group.dev.dependencies]
+django-extensions = "^3.2.1"
+djlint = "^1.28.0"
 ipython = "^8.13.2"
 black = "^23.3.0"
 isort = "^5.12.0"

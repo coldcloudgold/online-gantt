@@ -18,6 +18,7 @@ services:
     volumes:
       - .:/app
       - tunnel_volume:/app/static
+      - tunnel_volume:/app/media
     depends_on:
       - postgresdb
     environment:
@@ -42,6 +43,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - tunnel_volume:/static
+      - tunnel_volume:/media
     ports:
       - "8080:80"
     depends_on:
